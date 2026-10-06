@@ -1,0 +1,3015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forever Maybe — Dating Sim</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#080a16;
+    --panel:#11152a;
+    --panel2:#181d36;
+    --pink:#ff62c6;
+    --pink2:#ff9ce2;
+    --purple:#9b7cff;
+    --blue:#69c8ff;
+    --gold:#ffd76a;
+    --green:#72e6a1;
+    --red:#ff6878;
+    --text:#f7f2ff;
+    --muted:#aaa8c4;
+}
+
+body{
+    min-height:100vh;
+    color:var(--text);
+    font-family:Georgia,"Times New Roman",serif;
+    background:
+        radial-gradient(circle at 15% 10%,#30204b 0,transparent 32%),
+        radial-gradient(circle at 90% 90%,#24183d 0,transparent 30%),
+        var(--bg);
+}
+
+button{
+    font-family:inherit;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+header{
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    background:#080a16ee;
+    border-bottom:1px solid #ffffff15;
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter:blur(15px);
+}
+
+.logo{
+    color:var(--pink);
+    font-size:28px;
+    font-style:italic;
+    text-shadow:0 0 25px #ff62c655;
+}
+
+.logo small{
+    display:block;
+    color:#aaa;
+    font-size:9px;
+    letter-spacing:3px;
+    font-style:normal;
+}
+
+.top{
+    display:flex;
+    gap:25px;
+    color:var(--muted);
+    font-size:14px;
+}
+
+.top strong{
+    color:white;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:220px 1fr 270px;
+    min-height:calc(100vh - 72px);
+}
+
+.sidebar{
+    background:#0b0e1dcc;
+    border-right:1px solid #ffffff12;
+    padding:18px;
+}
+
+.right{
+    background:#0b0e1dcc;
+    border-left:1px solid #ffffff12;
+    padding:18px;
+}
+
+.main{
+    width:100%;
+    max-width:1150px;
+    margin:auto;
+    padding:25px;
+}
+
+.nav{
+    width:100%;
+    padding:13px;
+    margin-bottom:7px;
+    background:transparent;
+    border:0;
+    border-radius:12px;
+    color:#bbb8d0;
+    text-align:left;
+    cursor:pointer;
+    font-size:15px;
+    transition:.2s;
+}
+
+.nav:hover{
+    background:#ffffff0c;
+    color:white;
+    transform:translateX(3px);
+}
+
+.card{
+    background:linear-gradient(145deg,#171c35,#101326);
+    border:1px solid #ffffff12;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 15px 45px #00000025;
+}
+
+.muted{
+    color:var(--muted);
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+h1{
+    font-size:36px;
+    margin-bottom:8px;
+}
+
+h2{
+    margin-bottom:8px;
+}
+
+h3{
+    margin-bottom:10px;
+}
+
+.primary{
+    border:0;
+    border-radius:12px;
+    padding:13px 20px;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--pink),var(--purple));
+    box-shadow:0 8px 25px #ff62c633;
+    transition:.2s;
+}
+
+.primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 35px #ff62c655;
+}
+
+.secondary{
+    border:1px solid #ffffff1c;
+    border-radius:11px;
+    padding:11px 17px;
+    background:#ffffff08;
+    color:white;
+    cursor:pointer;
+}
+
+/* HOME */
+
+.hero{
+    min-height:500px;
+    position:relative;
+    overflow:hidden;
+    border-radius:25px;
+    border:1px solid #ffffff15;
+    background:
+        radial-gradient(circle at 70% 25%,#5d376c 0,transparent 25%),
+        linear-gradient(135deg,#251b3d,#10142a 65%);
+    display:flex;
+    align-items:flex-end;
+    padding:38px;
+}
+
+.hero:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 20%,white 0 1px,transparent 2px),
+        radial-gradient(circle at 70% 10%,white 0 1px,transparent 2px),
+        radial-gradient(circle at 90% 35%,white 0 1px,transparent 2px);
+    opacity:.35;
+}
+
+.heroText{
+    position:relative;
+    z-index:3;
+    max-width:600px;
+}
+
+.heroText h1{
+    font-size:58px;
+    text-shadow:0 5px 30px #000;
+}
+
+.heroText p{
+    line-height:1.8;
+    color:#d4d0df;
+    margin:15px 0 22px;
+}
+
+/* CHARACTER ART */
+
+.characterArt{
+    position:absolute;
+    right:9%;
+    bottom:-10px;
+    width:380px;
+    height:460px;
+    animation:float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+}
+
+.characterArt .hair{
+    position:absolute;
+    width:190px;
+    height:220px;
+    left:95px;
+    top:25px;
+    background:var(--hair);
+    border-radius:55% 55% 40% 40%;
+    z-index:3;
+}
+
+.characterArt .head{
+    position:absolute;
+    width:135px;
+    height:150px;
+    left:123px;
+    top:65px;
+    background:#efbea5;
+    border-radius:48% 48% 45% 45%;
+    z-index:4;
+}
+
+.characterArt .eye{
+    position:absolute;
+    top:125px;
+    width:9px;
+    height:13px;
+    border-radius:50%;
+    background:#332239;
+    z-index:8;
+}
+
+.characterArt .eye.one{
+    left:158px;
+}
+
+.characterArt .eye.two{
+    left:210px;
+}
+
+.characterArt .mouth{
+    position:absolute;
+    left:180px;
+    top:151px;
+    width:20px;
+    height:9px;
+    border-bottom:2px solid #8d405c;
+    border-radius:50%;
+    z-index:8;
+}
+
+.characterArt .body{
+    position:absolute;
+    left:70px;
+    top:220px;
+    width:240px;
+    height:250px;
+    background:linear-gradient(145deg,var(--accent),#292347);
+    border-radius:110px 110px 20px 20px;
+}
+
+.characterArt .neck{
+    position:absolute;
+    left:175px;
+    top:190px;
+    width:30px;
+    height:60px;
+    background:#efbea5;
+    z-index:2;
+}
+
+.characterArt .arm{
+    position:absolute;
+    width:65px;
+    height:200px;
+    background:#efbea5;
+    border-radius:50px;
+    top:235px;
+}
+
+.characterArt .arm.a{
+    left:45px;
+    transform:rotate(12deg);
+}
+
+.characterArt .arm.b{
+    right:38px;
+    transform:rotate(-12deg);
+}
+
+/* CHARACTER CARDS */
+
+.characters{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.charCard{
+    min-height:310px;
+    position:relative;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid #ffffff14;
+    background:linear-gradient(145deg,#171b34,#0e1121);
+    cursor:pointer;
+    transition:.25s;
+}
+
+.charCard:hover{
+    transform:translateY(-6px);
+    border-color:#ff62c655;
+    box-shadow:0 20px 50px #ff62c622;
+}
+
+.charCard .miniArt{
+    position:absolute;
+    right:10px;
+    bottom:-30px;
+    width:230px;
+    height:290px;
+    transform:scale(.75);
+}
+
+.charInfo{
+    position:absolute;
+    inset:auto 0 0 0;
+    padding:20px;
+    z-index:10;
+    background:linear-gradient(transparent,#080a16);
+}
+
+.charInfo h2{
+    font-size:25px;
+}
+
+.tag{
+    display:inline-block;
+    background:#ff62c622;
+    color:var(--pink2);
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:10px;
+    letter-spacing:1px;
+    margin:4px 0;
+}
+
+/* SCENE */
+
+.scene{
+    min-height:620px;
+    position:relative;
+    overflow:hidden;
+    border-radius:25px;
+    border:1px solid #ffffff14;
+    background:
+        radial-gradient(circle at 70% 15%,#ffcc9d 0,transparent 16%),
+        linear-gradient(180deg,#d87883,#533f66 45%,#101329);
+}
+
+.scene.cafe{
+    background:
+        radial-gradient(circle at 20% 20%,#ffca7c 0,transparent 10%),
+        linear-gradient(180deg,#69493c,#292036 55%,#0d1020);
+}
+
+.scene.park{
+    background:
+        radial-gradient(circle at 75% 20%,#ffd9a1 0,transparent 15%),
+        linear-gradient(180deg,#668d78,#293d40 60%,#0e1320);
+}
+
+.scene.night{
+    background:
+        radial-gradient(circle at 75% 15%,#fff7d4 0 2px,transparent 3px),
+        radial-gradient(circle at 20% 25%,#fff7d4 0 1px,transparent 2px),
+        linear-gradient(180deg,#19235a,#090b18);
+}
+
+.locationLabel{
+    position:absolute;
+    top:18px;
+    left:18px;
+    padding:9px 14px;
+    border-radius:20px;
+    background:#00000055;
+    backdrop-filter:blur(10px);
+    z-index:20;
+}
+
+#sceneChar{
+    position:absolute;
+    right:13%;
+    bottom:180px;
+    width:350px;
+    height:400px;
+}
+
+.scene .characterArt{
+    position:relative;
+    right:auto;
+    bottom:auto;
+    width:350px;
+    height:400px;
+}
+
+.dialogueBox{
+    position:absolute;
+    left:22px;
+    right:22px;
+    bottom:20px;
+    z-index:30;
+    padding:21px;
+    border-radius:18px;
+    border:1px solid #ffffff18;
+    background:#070916eF;
+    backdrop-filter:blur(15px);
+}
+
+.speaker{
+    color:var(--pink2);
+    font-size:19px;
+    font-weight:bold;
+    margin-bottom:9px;
+}
+
+.dialogueText{
+    color:#e7e2ef;
+    line-height:1.7;
+    min-height:55px;
+    margin-bottom:14px;
+}
+
+.choices{
+    display:grid;
+    gap:8px;
+}
+
+.choice{
+    padding:12px 15px;
+    text-align:left;
+    border-radius:11px;
+    border:1px solid #ffffff14;
+    background:#ffffff08;
+    color:white;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.choice:hover{
+    background:#ff62c615;
+    border-color:#ff62c655;
+    transform:translateX(4px);
+}
+
+/* MAP */
+
+.mapGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.place{
+    min-height:150px;
+    border:1px solid #ffffff13;
+    border-radius:17px;
+    background:linear-gradient(145deg,#171c36,#101326);
+    color:white;
+    cursor:pointer;
+    transition:.2s;
+    font-size:15px;
+}
+
+.place:hover{
+    transform:translateY(-5px);
+    border-color:#ff62c655;
+}
+
+.placeIcon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+/* BARS */
+
+.rel{
+    margin:14px 0;
+}
+
+.relTop{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
+}
+
+.bar{
+    height:8px;
+    border-radius:20px;
+    background:#ffffff0c;
+    overflow:hidden;
+}
+
+.bar i{
+    display:block;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--pink),var(--purple));
+    transition:1s;
+}
+
+/* INVENTORY */
+
+.item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:13px;
+    margin-bottom:8px;
+    background:#ffffff07;
+    border-radius:11px;
+}
+
+.item button,
+.message button{
+    padding:7px 12px;
+    border-radius:8px;
+    border:1px solid #ffffff18;
+    background:#ff62c622;
+    color:#ffb0e7;
+    cursor:pointer;
+}
+
+/* MESSAGE */
+
+.message{
+    background:#171b34;
+    border:1px solid #ffffff12;
+    padding:18px;
+    border-radius:15px;
+    margin-bottom:12px;
+}
+
+.message p{
+    color:#c5c2d3;
+    margin:9px 0 13px;
+    line-height:1.6;
+}
+
+/* STATS */
+
+.stat{
+    margin:15px 0;
+}
+
+.statHead{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
+}
+
+/* TOAST */
+
+#toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,100px);
+    background:#181d35;
+    border:1px solid #ffffff18;
+    padding:13px 22px;
+    border-radius:30px;
+    opacity:0;
+    transition:.35s;
+    z-index:1000;
+}
+
+#toast.show{
+    transform:translate(-50%,0);
+    opacity:1;
+}
+
+/* MOBILE */
+
+@media(max-width:1050px){
+    .layout{
+        grid-template-columns:190px 1fr;
+    }
+
+    .right{
+        display:none;
+    }
+}
+
+@media(max-width:720px){
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        display:flex;
+        overflow-x:auto;
+        padding:8px;
+        border-right:0;
+        border-bottom:1px solid #ffffff12;
+    }
+
+    .nav{
+        min-width:115px;
+        margin:0 4px;
+    }
+
+    .main{
+        padding:14px;
+    }
+
+    .characters{
+        grid-template-columns:1fr;
+    }
+
+    .mapGrid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .heroText h1{
+        font-size:40px;
+    }
+
+    .characterArt{
+        opacity:.35;
+        right:-80px;
+    }
+
+    .top{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        Forever Maybe ♡
+        <small>A DATING SIM ABOUT CHOICES, SECRETS & LOVE</small>
+    </div>
+
+    <div class="top">
+        <div>📅 Day <strong id="day">1</strong></div>
+        <div>⚡ Actions <strong id="actions">3</strong></div>
+        <div>💰 $<strong id="money">100</strong></div>
+    </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+    <button class="nav" onclick="show('home')">🏠 Home</button>
+    <button class="nav" onclick="show('characters')">💕 Characters</button>
+    <button class="nav" onclick="show('map')">🗺️ City</button>
+    <button class="nav" onclick="show('messagesPage')">💬 Messages</button>
+    <button class="nav" onclick="show('inventoryPage')">🎁 Inventory</button>
+    <button class="nav" onclick="show('statsPage')">📊 My Stats</button>
+    <button class="nav" onclick="saveGame()">💾 Save</button>
+    <button class="nav" onclick="loadGame()">📂 Load</button>
+
+    <div class="card">
+        <h3>👤 <span id="playerName">Alex</span></h3>
+        <p class="muted">Your story is shaped by every choice.</p>
+    </div>
+
+</aside>
+
+<main class="main">
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+<div class="hero">
+
+    <div class="heroText">
+
+        <p style="color:#ff9ce2;letter-spacing:3px">
+            CHAPTER ONE
+        </p>
+
+        <h1>Forever Maybe</h1>
+
+        <p>
+            You came to the city expecting an ordinary semester.
+            Classes. Friends. Work. Sleep.
+            Maybe a little fun.
+            <br><br>
+            You weren't expecting four people to completely
+            change your idea of love.
+        </p>
+
+        <button class="primary" onclick="startGame()">
+            Begin Your Story ♡
+        </button>
+
+    </div>
+
+    <div class="characterArt"
+         style="--hair:#3b2235;--accent:#9b5a91">
+
+        <div class="hair"></div>
+        <div class="head"></div>
+        <div class="eye one"></div>
+        <div class="eye two"></div>
+        <div class="mouth"></div>
+        <div class="neck"></div>
+        <div class="body"></div>
+        <div class="arm a"></div>
+        <div class="arm b"></div>
+
+    </div>
+
+</div>
+
+<div class="card" style="margin-top:18px">
+
+<h2>❤️ Your Choices Matter</h2>
+
+<p class="muted" style="line-height:1.8">
+
+Every character has four hidden relationship values:
+<strong>Affection, Trust, Attraction,</strong> and
+<strong>Compatibility.</strong>
+
+<br><br>
+
+You can become friends, lovers, strangers, or something
+more complicated. Characters remember what you say,
+open up when they trust you, and react differently to
+different personalities.
+
+<br><br>
+
+There are secrets, dates, gifts, messages, multiple routes,
+and several possible endings.
+
+</p>
+
+</div>
+
+</section>
+
+
+<!-- CHARACTERS -->
+
+<section id="characters" class="page">
+
+<h1>People You Could Fall For</h1>
+
+<p class="muted" style="margin-bottom:20px">
+Everyone has a different story. Get close enough to discover it.
+</p>
+
+<div class="characters">
+
+<!-- LILA -->
+
+<div class="charCard" onclick="meet('lila')">
+
+    <div class="miniArt characterArt"
+         style="--hair:#3b2235;--accent:#9b5a91">
+
+        <div class="hair"></div>
+        <div class="head"></div>
+        <div class="eye one"></div>
+        <div class="eye two"></div>
+        <div class="mouth"></div>
+        <div class="neck"></div>
+        <div class="body"></div>
+        <div class="arm a"></div>
+        <div class="arm b"></div>
+
+    </div>
+
+    <div class="charInfo">
+        <h2>Lila ♡</h2>
+        <span class="tag">THE DREAMER</span>
+        <p class="muted">
+            19 • Photography • Coffee • Music
+        </p>
+    </div>
+
+</div>
+
+
+<!-- MAYA -->
+
+<div class="charCard" onclick="meet('maya')">
+
+    <div class="miniArt characterArt"
+         style="--hair:#d7a63e;--accent:#a77735">
+
+        <div class="hair"></div>
+        <div class="head"></div>
+        <div class="eye one"></div>
+        <div class="eye two"></div>
+        <div class="mouth"></div>
+        <div class="neck"></div>
+        <div class="body"></div>
+        <div class="arm a"></div>
+        <div class="arm b"></div>
+
+    </div>
+
+    <div class="charInfo">
+        <h2>Maya ♡</h2>
+        <span class="tag">THE ATHLETE</span>
+        <p class="muted">
+            20 • Soccer • Fitness • Competition
+        </p>
+    </div>
+
+</div>
+
+
+<!-- RIVEN -->
+
+<div class="charCard" onclick="meet('riven')">
+
+    <div class="miniArt characterArt"
+         style="--hair:#263e70;--accent:#536eaa">
+
+        <div class="hair"></div>
+        <div class="head"></div>
+        <div class="eye one"></div>
+        <div class="eye two"></div>
+        <div class="mouth"></div>
+        <div class="neck"></div>
+        <div class="body"></div>
+        <div class="arm a"></div>
+        <div class="arm b"></div>
+
+    </div>
+
+    <div class="charInfo">
+        <h2>Riven ♡</h2>
+        <span class="tag">THE MYSTERY</span>
+        <p class="muted">
+            21 • Literature • Art • Poetry
+        </p>
+    </div>
+
+</div>
+
+
+<!-- ELENA -->
+
+<div class="charCard" onclick="meet('elena')">
+
+    <div class="miniArt characterArt"
+         style="--hair:#7b2936;--accent:#a74d58">
+
+        <div class="hair"></div>
+        <div class="head"></div>
+        <div class="eye one"></div>
+        <div class="eye two"></div>
+        <div class="mouth"></div>
+        <div class="neck"></div>
+        <div class="body"></div>
+        <div class="arm a"></div>
+        <div class="arm b"></div>
+
+    </div>
+
+    <div class="charInfo">
+        <h2>Elena ♡</h2>
+        <span class="tag">THE CHAOS</span>
+        <p class="muted">
+            19 • Theater • Parties • Adventure
+        </p>
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MAP -->
+
+<section id="map" class="page">
+
+<h1>City</h1>
+
+<p class="muted" style="margin-bottom:20px">
+Choose where you want to spend your next action.
+</p>
+
+<div class="mapGrid">
+
+<button class="place" onclick="goLocation('cafe')">
+    <div class="placeIcon">☕</div>
+    <strong>Moonlight Café</strong>
+    <br>
+    <span class="muted">Coffee • Study • Conversation</span>
+</button>
+
+<button class="place" onclick="goLocation('park')">
+    <div class="placeIcon">🌳</div>
+    <strong>Riverside Park</strong>
+    <br>
+    <span class="muted">Nature • Walking • Romance</span>
+</button>
+
+<button class="place" onclick="goLocation('campus')">
+    <div class="placeIcon">🏫</div>
+    <strong>University</strong>
+    <br>
+    <span class="muted">Classes • Clubs • Friends</span>
+</button>
+
+<button class="place" onclick="goLocation('arcade')">
+    <div class="placeIcon">🎮</div>
+    <strong>Neon Arcade</strong>
+    <br>
+    <span class="muted">Games • Competition • Fun</span>
+</button>
+
+<button class="place" onclick="goLocation('beach')">
+    <div class="placeIcon">🌅</div>
+    <strong>Sunset Beach</strong>
+    <br>
+    <span class="muted">Secrets • Romance • Dates</span>
+</button>
+
+<button class="place" onclick="goLocation('club')">
+    <div class="placeIcon">🎵</div>
+    <strong>Starlight Club</strong>
+    <br>
+    <span class="muted">Music • Dancing • Chaos</span>
+</button>
+
+</div>
+
+</section>
+
+
+<!-- SCENE -->
+
+<section id="scenePage" class="page">
+
+<div id="scene" class="scene">
+
+    <div id="locationLabel" class="locationLabel">
+        Moonlight Café
+    </div>
+
+    <div id="sceneChar"></div>
+
+    <div class="dialogueBox">
+
+        <div id="speaker" class="speaker">
+            Narrator
+        </div>
+
+        <div id="dialogue" class="dialogueText">
+            Welcome.
+        </div>
+
+        <div id="choices" class="choices"></div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- MESSAGES -->
+
+<section id="messagesPage" class="page">
+
+<h1>Messages</h1>
+
+<p class="muted" style="margin-bottom:20px">
+Your phone has become surprisingly important.
+</p>
+
+<div id="messages"></div>
+
+</section>
+
+
+<!-- INVENTORY -->
+
+<section id="inventoryPage" class="page">
+
+<h1>Inventory</h1>
+
+<p class="muted" style="margin-bottom:20px">
+Gifts can increase affection and trust.
+</p>
+
+<div class="card">
+
+<div id="inventory"></div>
+
+</div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section id="statsPage" class="page">
+
+<h1>Your Character</h1>
+
+<div class="card">
+
+<h2 id="statsName">Alex</h2>
+
+<div class="stat">
+
+<div class="statHead">
+<span>❤️ Kindness</span>
+<strong id="kindness">5</strong>
+</div>
+
+<div class="bar">
+<i id="kindBar" style="width:50%;background:#ff62c6"></i>
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="statHead">
+<span>⭐ Confidence</span>
+<strong id="confidence">5</strong>
+</div>
+
+<div class="bar">
+<i id="confidenceBar" style="width:50%;background:#ffd76a"></i>
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="statHead">
+<span>😂 Humor</span>
+<strong id="humor">5</strong>
+</div>
+
+<div class="bar">
+<i id="humorBar" style="width:50%;background:#72e6a1"></i>
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="statHead">
+<span>🧠 Intelligence</span>
+<strong id="intelligence">5</strong>
+</div>
+
+<div class="bar">
+<i id="intelBar" style="width:50%;background:#69c8ff"></i>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>💕 Relationships</h2>
+
+<div id="relationshipStats"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🏆 Endings</h2>
+
+<p class="muted">
+Endings discovered:
+<strong id="endingCount">0</strong>
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- RIGHT PANEL -->
+
+<aside class="right">
+
+<div class="card">
+
+<h3>💕 Relationships</h3>
+
+<div id="relList"></div>
+
+</div>
+
+
+<div class="card">
+
+<h3>📅 Current Day</h3>
+
+<p class="muted">
+Day <strong id="rightDay">1</strong>
+</p>
+
+<hr>
+
+<p class="muted">
+Actions remaining:
+<strong id="rightActions">3</strong>
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>💰 Money</h3>
+
+<p style="font-size:25px;color:#ffd76a">
+$<span id="rightMoney">100</span>
+</p>
+
+</div>
+
+</aside>
+
+</div>
+
+<div id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   GAME DATA
+========================================================= */
+
+const game = {
+
+    name:"Alex",
+
+    day:1,
+
+    money:100,
+
+    actions:3,
+
+    started:false,
+
+    current:null,
+
+    stats:{
+        kindness:5,
+        confidence:5,
+        humor:5,
+        intelligence:5
+    },
+
+    inventory:{
+        Chocolate:2,
+        Flowers:1,
+        Coffee:2,
+        Book:1
+    },
+
+    messages:[],
+
+    endings:[],
+
+    relationships:{
+
+        lila:{
+            affection:8,
+            trust:5,
+            attraction:7,
+            compatibility:5,
+            dates:0,
+            secret:false
+        },
+
+        maya:{
+            affection:5,
+            trust:6,
+            attraction:5,
+            compatibility:5,
+            dates:0,
+            secret:false
+        },
+
+        riven:{
+            affection:6,
+            trust:4,
+            attraction:7,
+            compatibility:5,
+            dates:0,
+            secret:false
+        },
+
+        elena:{
+            affection:7,
+            trust:4,
+            attraction:6,
+            compatibility:4,
+            dates:0,
+            secret:false
+        }
+
+    }
+
+};
+
+
+/* =========================================================
+   CHARACTER DATA
+========================================================= */
+
+const chars = {
+
+    lila:{
+        name:"Lila",
+        tag:"The Dreamer",
+        hair:"#3b2235",
+        accent:"#9b5a91",
+        interests:"photography, coffee, music, and books"
+    },
+
+    maya:{
+        name:"Maya",
+        tag:"The Athlete",
+        hair:"#d7a63e",
+        accent:"#a77735",
+        interests:"soccer, fitness, competition, and travel"
+    },
+
+    riven:{
+        name:"Riven",
+        tag:"The Mystery",
+        hair:"#263e70",
+        accent:"#536eaa",
+        interests:"literature, painting, poetry, and night walks"
+    },
+
+    elena:{
+        name:"Elena",
+        tag:"The Chaos",
+        hair:"#7b2936",
+        accent:"#a74d58",
+        interests:"theater, parties, adventure, and music"
+    }
+
+};
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+function clamp(value){
+
+    return Math.max(0,Math.min(100,value));
+
+}
+
+
+function changeRelationship(id,values){
+
+    const r=game.relationships[id];
+
+    for(const key in values){
+
+        r[key]=clamp(r[key]+values[key]);
+
+    }
+
+    update();
+
+}
+
+
+function useAction(){
+
+    game.actions--;
+
+    if(game.actions<=0){
+
+        game.day++;
+
+        game.actions=3;
+
+        toast("🌙 A new day begins.");
+
+        randomEvent();
+
+    }
+
+    update();
+
+}
+
+
+function randomCharacter(){
+
+    const list=[
+        "lila",
+        "maya",
+        "riven",
+        "elena"
+    ];
+
+    return list[Math.floor(Math.random()*list.length)];
+
+}
+
+
+function show(id){
+
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    update();
+
+}
+
+
+function toast(message){
+
+    const box=document.getElementById("toast");
+
+    box.textContent=message;
+
+    box.classList.add("show");
+
+    setTimeout(()=>{
+        box.classList.remove("show");
+    },1800);
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startGame(){
+
+    let name=prompt(
+        "What is your name?",
+        "Alex"
+    );
+
+    if(name && name.trim()){
+
+        game.name=name.trim();
+
+    }
+
+    game.started=true;
+
+    show("scenePage");
+
+    dialogue(
+        "Narrator",
+
+        `Welcome, ${game.name}. A new semester has begun. You have three actions today. Somewhere in this city are four people who could become friends, rivals, or something much more.`,
+
+        [
+
+            {
+                text:"Begin your story",
+
+                action:()=>{
+                    meet("lila");
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/* =========================================================
+   DIALOGUE
+========================================================= */
+
+function dialogue(speaker,text,choices){
+
+    document.getElementById("speaker").textContent=speaker;
+
+    document.getElementById("dialogue").textContent=text;
+
+    const box=document.getElementById("choices");
+
+    box.innerHTML="";
+
+    choices.forEach(choice=>{
+
+        const button=document.createElement("button");
+
+        button.className="choice";
+
+        button.textContent=choice.text;
+
+        button.onclick=choice.action;
+
+        box.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   CHARACTER ART
+========================================================= */
+
+function characterArt(id){
+
+    const c=chars[id];
+
+    return `
+
+    <div class="characterArt"
+         style="--hair:${c.hair};--accent:${c.accent}">
+
+        <div class="hair"></div>
+
+        <div class="head"></div>
+
+        <div class="eye one"></div>
+
+        <div class="eye two"></div>
+
+        <div class="mouth"></div>
+
+        <div class="neck"></div>
+
+        <div class="body"></div>
+
+        <div class="arm a"></div>
+
+        <div class="arm b"></div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   MEET CHARACTER
+========================================================= */
+
+function meet(id){
+
+    game.current=id;
+
+    show("scenePage");
+
+    document.getElementById("sceneChar").innerHTML=
+        characterArt(id);
+
+    const r=game.relationships[id];
+
+    let greeting;
+
+    if(r.affection<15){
+
+        greeting="“Hey. Good to see you.”";
+
+    }else if(r.affection<30){
+
+        greeting="“I was hoping you would show up.”";
+
+    }else{
+
+        greeting="“There you are. I was wondering when I would get to see you again.”";
+
+    }
+
+    dialogue(
+        chars[id].name,
+        greeting,
+        [
+
+            {
+                text:"Ask about their day.",
+
+                action:()=>{
+                    talk(id);
+                }
+
+            },
+
+            {
+                text:"Invite them on a date.",
+
+                action:()=>{
+                    date(id);
+                }
+
+            },
+
+            {
+                text:"Give them a gift.",
+
+                action:()=>{
+                    giftMenu(id);
+                }
+
+            },
+
+            {
+                text:"Ask what they really want from life.",
+
+                action:()=>{
+                    deepTalk(id);
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/* =========================================================
+   TALK
+========================================================= */
+
+function talk(id){
+
+    const c=chars[id];
+
+    dialogue(
+        c.name,
+
+        `“Today? Honestly, I've been thinking about ${c.interests}. What about you?”`,
+
+        [
+
+            {
+                text:"“I want to hear more about you.”",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        trust:3,
+                        affection:2
+                    });
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            },
+
+            {
+                text:"“Tell me something nobody else knows.”",
+
+                action:()=>{
+
+                    revealSecret(id);
+
+                }
+
+            },
+
+            {
+                text:"“You look really good today.”",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        attraction:4
+                    });
+
+                    game.stats.confidence++;
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/* =========================================================
+   SECRETS
+========================================================= */
+
+function revealSecret(id){
+
+    const secrets={
+
+        lila:
+        "“People think I am confident because I photograph everything. Actually, hiding behind a camera is easier than being seen.”",
+
+        maya:
+        "“I might lose my place on the team. My injury is worse than I told everyone.”",
+
+        riven:
+        "“I publish poetry online under a secret name. Nobody here knows it is me.”",
+
+        elena:
+        "“My family expects me to take over their business. I want a completely different life.”"
+
+    };
+
+    game.relationships[id].secret=true;
+
+    dialogue(
+        chars[id].name,
+        secrets[id],
+        [
+
+            {
+                text:"“Thank you for trusting me.”",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        trust:6,
+                        affection:4
+                    });
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            },
+
+            {
+                text:"“I will keep it between us.”",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        trust:8
+                    });
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/* =========================================================
+   DEEP TALK
+========================================================= */
+
+function deepTalk(id){
+
+    dialogue(
+        chars[id].name,
+
+        "“If you could wake up tomorrow and have one thing in your life completely figured out, what would it be?”",
+
+        [
+
+            {
+                text:"“Love.”",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        attraction:4,
+                        compatibility:3
+                    });
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            },
+
+            {
+                text:"“My future.”",
+
+                action:()=>{
+
+                    game.stats.intelligence++;
+
+                    changeRelationship(id,{
+                        trust:3,
+                        compatibility:3
+                    });
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            },
+
+            {
+                text:"“I would rather figure it out with someone.”",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        affection:5,
+                        attraction:3
+                    });
+
+                    useAction();
+
+                    meet(id);
+
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+/* =========================================================
+   DATING
+========================================================= */
+
+function date(id){
+
+    const r=game.relationships[id];
+
+    if(r.affection<15){
+
+        dialogue(
+            chars[id].name,
+
+            "“A date already? I like you, but maybe we should spend a little more time together first.”",
+
+            [
+
+                {
+                    text:"“Fair enough.”",
+
+                    action:()=>{
+                        meet(id);
+                    }
+
+                }
+
+            ]
+
+        );
+
+        return;
+
+    }
+
+    if(game.money<15){
+
+        toast("💰 You need $15 for a date.");
+
+        return;
+
+    }
+
+    game.money-=15;
+
+    r.dates++;
+
+    dialogue(
+        chars[id].name,
+
+        "“A date? Okay. I was hoping you would ask.”",
+
+        [
+
+            {
+                text:"Go somewhere quiet.",
+
+                action:()=>{
+                    dateChoice(id,"quiet");
+                }
+
+            },
+
+            {
+                text:"Go somewhere exciting.",
+
+                action:()=>{
+                    dateChoice(id,"wild");
+                }
+
+            },
+
+            {
+                text:"Let them choose.",
+
+                action:()=>{
+                    dateChoice(id,"choice");
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+function dateChoice(id,type){
+
+    let text;
+
+    if(type==="quiet"){
+
+        text=
+        "The two of you find a quiet table away from the crowd. Hours pass without either of you noticing.";
+
+    }
+
+    if(type==="wild"){
+
+        text=
+        "The date becomes a ridiculous chain of games, laughter, and one decision you will probably regret tomorrow.";
+
+    }
+
+    if(type==="choice"){
+
+        text=
+        "You let them choose the destination. The fact that you trust them seems to mean more than you expected.";
+
+    }
+
+    dialogue(
+        chars[id].name,
+        text,
+        [
+
+            {
+                text:"Open up about something personal.",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        trust:5,
+                        affection:4,
+                        compatibility:3
+                    });
+
+                    finishDate(id);
+
+                }
+
+            },
+
+            {
+                text:"Flirt shamelessly.",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        attraction:6,
+                        affection:3
+                    });
+
+                    finishDate(id);
+
+                }
+
+            },
+
+            {
+                text:"Ask about their future.",
+
+                action:()=>{
+
+                    changeRelationship(id,{
+                        compatibility:5,
+                        trust:3
+                    });
+
+                    finishDate(id);
+
+                }
+
+            }
+
+        ]
+
+    );
+
+}
+
+
+function finishDate(id){
+
+    const r=game.relationships[id];
+
+    if(
+        r.affection>=30 &&
+        !r.secret
+    ){
+
+        dialogue(
+            chars[id].name,
+
+            "“There is something I have not told you yet. Maybe... next time.”",
+
+            [
+
+                {
+                    text:"“I will be here.”",
+
+                    action:()=>{
+
+                        changeRelationship(id,{
+                            trust:3
+                        });
+
+                        useAction();
+
+                        meet(id);
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }else{
+
+        dialogue(
+            "Narrator",
+
+            "When the date ends, neither of you wants to be the first to say goodbye.",
+
+            [
+
+                {
+                    text:"Continue",
+
+                    action:()=>{
+
+                        useAction();
+
+                        meet(id);
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   GIFTS
+========================================================= */
+
+function giftMenu(id){
+
+    show("inventoryPage");
+
+    toast(
+        "Choose an item below. You will be asked who receives it."
+    );
+
+}
+
+
+function chooseGift(item){
+
+    if(!game.inventory[item]){
+
+        toast("You don't have that item.");
+
+        return;
+
+    }
+
+    const target=prompt(
+        "Give the "+item+" to:\n\nLila\nMaya\nRiven\nElena"
+    );
+
+    if(!target)return;
+
+    const id=Object.keys(chars).find(
+        key=>
+        chars[key].name.toLowerCase()===
+        target.toLowerCase()
+    );
+
+    if(!id){
+
+        toast("Character not found.");
+
+        return;
+
+    }
+
+    game.inventory[item]--;
+
+    const bonuses={
+
+        Chocolate:3,
+
+        Flowers:5,
+
+        Coffee:2,
+
+        Book:4
+
+    };
+
+    const bonus=bonuses[item]||2;
+
+    changeRelationship(id,{
+        affection:bonus,
+        trust:Math.floor(bonus/2)
+    });
+
+    toast(
+        "🎁 "+chars[id].name+" loved the "+item+"!"
+    );
+
+    useAction();
+
+    meet(id);
+
+}
+
+
+/* =========================================================
+   LOCATIONS
+========================================================= */
+
+function goLocation(place){
+
+    show("scenePage");
+
+    const scene=document.getElementById("scene");
+
+    scene.className="scene";
+
+    if(place==="cafe"){
+        scene.classList.add("cafe");
+    }
+
+    if(place==="park"){
+        scene.classList.add("park");
+    }
+
+    if(place==="beach" || place==="club"){
+        scene.classList.add("night");
+    }
+
+    const labels={
+
+        cafe:"Moonlight Café",
+
+        park:"Riverside Park",
+
+        campus:"University Campus",
+
+        arcade:"Neon Arcade",
+
+        beach:"Sunset Beach",
+
+        club:"Starlight Club"
+
+    };
+
+    document.getElementById("locationLabel").textContent=
+        labels[place];
+
+    document.getElementById("sceneChar").innerHTML="";
+
+
+    if(place==="cafe"){
+
+        dialogue(
+            "Narrator",
+
+            "Warm lights glow against the rainy windows. This is a good place to study, talk, or accidentally fall in love.",
+
+            [
+
+                {
+                    text:"Study",
+
+                    action:()=>{
+
+                        game.stats.intelligence++;
+
+                        useAction();
+
+                        toast("🧠 Intelligence increased.");
+
+                    }
+
+                },
+
+                {
+                    text:"Look for someone",
+
+                    action:()=>{
+
+                        meet(randomCharacter());
+
+                    }
+
+                },
+
+                {
+                    text:"Buy coffee ($5)",
+
+                    action:()=>{
+
+                        if(game.money>=5){
+
+                            game.money-=5;
+
+                            game.inventory.Coffee++;
+
+                            useAction();
+
+                            toast("☕ Coffee added.");
+
+                        }else{
+
+                            toast("Not enough money.");
+
+                        }
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+
+    if(place==="park"){
+
+        dialogue(
+            "Narrator",
+
+            "The river is calm tonight. People are walking beneath the trees, and the city feels far away.",
+
+            [
+
+                {
+                    text:"Take a walk",
+
+                    action:()=>{
+
+                        game.stats.kindness++;
+
+                        useAction();
+
+                        toast("🌿 Kindness increased.");
+
+                    }
+
+                },
+
+                {
+                    text:"Look for someone",
+
+                    action:()=>{
+
+                        meet(randomCharacter());
+
+                    }
+
+                },
+
+                {
+                    text:"Practice confidence",
+
+                    action:()=>{
+
+                        game.stats.confidence++;
+
+                        useAction();
+
+                        toast("⭐ Confidence increased.");
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+
+    if(place==="campus"){
+
+        dialogue(
+            "Narrator",
+
+            "Students crowd the campus paths. Somewhere nearby, a club is handing out flyers.",
+
+            [
+
+                {
+                    text:"Study",
+
+                    action:()=>{
+
+                        game.stats.intelligence++;
+
+                        useAction();
+
+                    }
+
+                },
+
+                {
+                    text:"Join a social club",
+
+                    action:()=>{
+
+                        game.stats.confidence++;
+
+                        game.stats.humor++;
+
+                        useAction();
+
+                    }
+
+                },
+
+                {
+                    text:"Find someone",
+
+                    action:()=>{
+
+                        meet(randomCharacter());
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+
+    if(place==="arcade"){
+
+        dialogue(
+            "Narrator",
+
+            "Neon lights flicker across rows of machines. A perfect place for competition and terrible decisions.",
+
+            [
+
+                {
+                    text:"Play a game",
+
+                    action:()=>{
+
+                        game.stats.confidence++;
+
+                        useAction();
+
+                        toast("🎮 Confidence increased.");
+
+                    }
+
+                },
+
+                {
+                    text:"Ask someone on a date",
+
+                    action:()=>{
+
+                        date(randomCharacter());
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+
+    if(place==="beach"){
+
+        dialogue(
+            "Narrator",
+
+            "The sun sinks into the water. The air is cool, and everyone seems more willing to tell the truth here.",
+
+            [
+
+                {
+                    text:"Wait for someone",
+
+                    action:()=>{
+
+                        meet(randomCharacter());
+
+                    }
+
+                },
+
+                {
+                    text:"Think about your future",
+
+                    action:()=>{
+
+                        game.stats.intelligence++;
+
+                        game.stats.kindness++;
+
+                        useAction();
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+
+    if(place==="club"){
+
+        dialogue(
+            "Narrator",
+
+            "Music fills the room. Tonight could be fun, romantic, or a complete disaster.",
+
+            [
+
+                {
+                    text:"Dance",
+
+                    action:()=>{
+
+                        game.stats.confidence++;
+
+                        game.stats.humor++;
+
+                        useAction();
+
+                    }
+
+                },
+
+                {
+                    text:"Find someone",
+
+                    action:()=>{
+
+                        meet(randomCharacter());
+
+                    }
+
+                }
+
+            ]
+
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RANDOM EVENTS
+========================================================= */
+
+function randomEvent(){
+
+    const roll=Math.random();
+
+    if(roll<0.30){
+
+        const id=randomCharacter();
+
+        game.messages.push({
+
+            from:chars[id].name,
+
+            text:"Hey... are you free sometime? I was thinking about you."
+
+        });
+
+        toast(
+            "💬 "+chars[id].name+" sent you a message."
+        );
+
+    }
+
+    else if(roll<0.50){
+
+        game.money+=20;
+
+        toast("💰 You earned $20 from a side job.");
+
+    }
+
+    else if(roll<0.65){
+
+        game.inventory.Flowers++;
+
+        toast("🌸 You found some beautiful flowers.");
+
+    }
+
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+function renderMessages(){
+
+    const box=document.getElementById("messages");
+
+    if(game.messages.length===0){
+
+        box.innerHTML=
+        '<div class="card"><p class="muted">No messages yet.</p></div>';
+
+        return;
+
+    }
+
+    box.innerHTML="";
+
+    game.messages.forEach((message,index)=>{
+
+        const div=document.createElement("div");
+
+        div.className="message";
+
+        div.innerHTML=`
+
+            <b>💬 ${message.from}</b>
+
+            <p>${message.text}</p>
+
+            <button onclick="replyMessage(${index})">
+                Reply
+            </button>
+
+        `;
+
+        box.appendChild(div);
+
+    });
+
+}
+
+
+function replyMessage(index){
+
+    const message=game.messages[index];
+
+    const id=Object.keys(chars).find(
+        key=>chars[key].name===message.from
+    );
+
+    if(id){
+
+        changeRelationship(id,{
+            affection:3,
+            trust:2
+        });
+
+    }
+
+    game.messages.splice(index,1);
+
+    toast("💬 Reply sent.");
+
+    update();
+
+}
+
+
+/* =========================================================
+   INVENTORY
+========================================================= */
+
+function renderInventory(){
+
+    const box=document.getElementById("inventory");
+
+    box.innerHTML="";
+
+    for(const item in game.inventory){
+
+        box.innerHTML+=`
+
+        <div class="item">
+
+            <span>🎁 ${item}</span>
+
+            <strong>${game.inventory[item]}</strong>
+
+            <button onclick="chooseGift('${item}')">
+                Give
+            </button>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   RELATIONSHIPS
+========================================================= */
+
+function relationshipScore(r){
+
+    return Math.round(
+        (
+            r.affection+
+            r.trust+
+            r.attraction+
+            r.compatibility
+        )/4
+    );
+
+}
+
+
+function renderRelationships(){
+
+    const mini=document.getElementById("relList");
+
+    mini.innerHTML="";
+
+    for(const id in game.relationships){
+
+        const r=game.relationships[id];
+
+        const score=relationshipScore(r);
+
+        mini.innerHTML+=`
+
+        <div class="rel">
+
+            <div class="relTop">
+
+                <b>${chars[id].name}</b>
+
+                <span>${score}/100</span>
+
+            </div>
+
+            <div class="bar">
+
+                <i style="width:${score}%"></i>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function renderStats(){
+
+    document.getElementById("statsName").textContent=
+        game.name;
+
+    document.getElementById("kindness").textContent=
+        game.stats.kindness;
+
+    document.getElementById("confidence").textContent=
+        game.stats.confidence;
+
+    document.getElementById("humor").textContent=
+        game.stats.humor;
+
+    document.getElementById("intelligence").textContent=
+        game.stats.intelligence;
+
+    document.getElementById("kindBar").style.width=
+        Math.min(game.stats.kindness*10,100)+"%";
+
+    document.getElementById("confidenceBar").style.width=
+        Math.min(game.stats.confidence*10,100)+"%";
+
+    document.getElementById("humorBar").style.width=
+        Math.min(game.stats.humor*10,100)+"%";
+
+    document.getElementById("intelBar").style.width=
+        Math.min(game.stats.intelligence*10,100)+"%";
+
+
+    const box=document.getElementById(
+        "relationshipStats"
+    );
+
+    box.innerHTML="";
+
+
+    for(const id in game.relationships){
+
+        const r=game.relationships[id];
+
+        box.innerHTML+=`
+
+        <div class="card">
+
+            <h3>${chars[id].name} ❤️</h3>
+
+            <div class="stat">
+
+                <div class="statHead">
+                    <span>Affection</span>
+                    <strong>${r.affection}</strong>
+                </div>
+
+                <div class="bar">
+                    <i style="width:${r.affection}%"></i>
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="statHead">
+                    <span>Trust</span>
+                    <strong>${r.trust}</strong>
+                </div>
+
+                <div class="bar">
+                    <i style="width:${r.trust}%;background:#69c8ff"></i>
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="statHead">
+                    <span>Attraction</span>
+                    <strong>${r.attraction}</strong>
+                </div>
+
+                <div class="bar">
+                    <i style="width:${r.attraction}%;background:#ff6878"></i>
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="statHead">
+                    <span>Compatibility</span>
+                    <strong>${r.compatibility}</strong>
+                </div>
+
+                <div class="bar">
+                    <i style="width:${r.compatibility}%;background:#9b7cff"></i>
+                </div>
+
+            </div>
+
+            <p class="muted">
+                Dates: ${r.dates}
+            </p>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   ENDINGS
+========================================================= */
+
+function calculateEndings(){
+
+    const found=[];
+
+    for(const id in game.relationships){
+
+        const r=game.relationships[id];
+
+        if(
+            r.affection>=70 &&
+            r.trust>=60 &&
+            r.attraction>=60 &&
+            r.compatibility>=50
+        ){
+
+            found.push(
+                chars[id].name+" — True Love"
+            );
+
+        }else if(r.affection>=50){
+
+            found.push(
+                chars[id].name+" — Romance"
+            );
+
+        }else if(r.affection>=30){
+
+            found.push(
+                chars[id].name+" — Close Friends"
+            );
+
+        }
+
+    }
+
+    game.endings=[
+        ...new Set(found)
+    ];
+
+    document.getElementById(
+        "endingCount"
+    ).textContent=game.endings.length;
+
+}
+
+
+/* =========================================================
+   SAVE / LOAD
+========================================================= */
+
+function saveGame(){
+
+    localStorage.setItem(
+        "foreverMaybeSave",
+        JSON.stringify(game)
+    );
+
+    toast("💾 Game saved.");
+
+}
+
+
+function loadGame(){
+
+    const saved=
+        localStorage.getItem(
+            "foreverMaybeSave"
+        );
+
+    if(!saved){
+
+        toast("No save file found.");
+
+        return;
+
+    }
+
+    const loaded=
+        JSON.parse(saved);
+
+    Object.assign(game,loaded);
+
+    update();
+
+    toast("📂 Game loaded.");
+
+}
+
+
+/* =========================================================
+   UPDATE UI
+========================================================= */
+
+function update(){
+
+    document.getElementById("day").textContent=
+        game.day;
+
+    document.getElementById("rightDay").textContent=
+        game.day;
+
+    document.getElementById("actions").textContent=
+        game.actions;
+
+    document.getElementById("rightActions").textContent=
+        game.actions;
+
+    document.getElementById("money").textContent=
+        game.money;
+
+    document.getElementById("rightMoney").textContent=
+        game.money;
+
+    document.getElementById("playerName").textContent=
+        game.name;
+
+    renderRelationships();
+
+    renderStats();
+
+    renderInventory();
+
+    renderMessages();
+
+    calculateEndings();
+
+}
+
+
+/* =========================================================
+   RANDOM PHONE MESSAGES
+========================================================= */
+
+setInterval(()=>{
+
+    if(
+        game.started &&
+        Math.random()<0.15
+    ){
+
+        const id=randomCharacter();
+
+        const messages=[
+
+            "Hey, are you free sometime?",
+
+            "I just thought of you.",
+
+            "Want to do something tomorrow?",
+
+            "I have something I want to tell you.",
+
+            "You disappeared. Everything okay?"
+
+        ];
+
+        game.messages.push({
+
+            from:chars[id].name,
+
+            text:
+                messages[
+                    Math.floor(
+                        Math.random()*messages.length
+                    )
+                ]
+
+        });
+
+        toast(
+            "💬 "+chars[id].name+
+            " sent you a message."
+        );
+
+        update();
+
+    }
+
+},12000);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+update();
+
+</script>
+
+</body>
+</html>
